@@ -1,18 +1,4 @@
 import { ComponentChildren } from "npm:preact";
-import { FileManager } from "../utils/FileManager.ts";
-
-const css = await FileManager.readFile(`${import.meta.dirname}/style.css`);
-
-class ServerURLManager {
-  static readonly serverUrl =
-    Deno.env.get("MODE") === "production"
-      ? Deno.env.get("SERVER_URL")
-      : "http://localhost:8000";
-
-  static formatUrl(path: string) {
-    return `${this.serverUrl}${path}`;
-  }
-}
 
 const Layout = (props: { children: ComponentChildren }) => {
   return (
@@ -21,7 +7,7 @@ const Layout = (props: { children: ComponentChildren }) => {
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>My App</title>
-        <style>{css}</style>
+        <link rel="stylesheet" href="/public/css/style.css" />
       </head>
       <body>{props.children}</body>
     </html>

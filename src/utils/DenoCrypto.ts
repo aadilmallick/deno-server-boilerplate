@@ -16,4 +16,8 @@ export class CryptoUtils {
   static sha256(str: string, format: "hex" | "base64" = "hex") {
     return this.getHash(str, "SHA-256", format);
   }
+
+  static uuid() {
+    return crypto.randomUUID();
+  }
 }

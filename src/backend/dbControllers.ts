@@ -41,3 +41,27 @@ export class AuthDBControllers {
     await sessionsTable.delete([sessionId]);
   }
 }
+
+export const UserDBControllers = {
+  getUserFromUserId: async (userId: string) => {
+    const user = await usersTable.get([userId]);
+    return user.value;
+  },
+  updateUser: async (
+    userId: string,
+    cb: (user: User) => {
+      data: Partial<User["data"]>;
+    }
+  ) => {
+    const user = (await usersTable.get([userId])).value;
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const { data } = await cb(user);
+    user.data = {
+      ...user.data,
+      ...data,
+    };
+    await usersTable.set([userId], user);
+  },
+};

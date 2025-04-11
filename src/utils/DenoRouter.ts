@@ -237,7 +237,12 @@ export class DenoRouter<
     return route(this.routes, () => new Response("Not Found", { status: 404 }));
   }
 
-  initServer() {
-    Deno.serve(this.handler);
+  initServer(port = 8000) {
+    Deno.serve(
+      {
+        port,
+      },
+      this.handler
+    );
   }
 }

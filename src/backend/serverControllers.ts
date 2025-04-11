@@ -37,15 +37,3 @@ export class MiddleWares {
     }
   );
 }
-
-export class ServerUtils {
-  static async withTryCatch(cb: () => Promise<void>) {
-    try {
-      await cb();
-      return true;
-    } catch (error) {
-      console.error("Error in operation", error);
-      return false;
-    }
-  }
-}

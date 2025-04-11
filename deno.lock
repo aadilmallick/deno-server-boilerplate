@@ -23,6 +23,8 @@
     "jsr:@std/streams@0.221": "0.221.0",
     "jsr:@std/streams@^1.0.8": "1.0.8",
     "npm:@types/node@*": "22.9.0",
+    "npm:@types/nodemailer@*": "6.4.17",
+    "npm:nodemailer@*": "6.9.16",
     "npm:preact-render-to-string@*": "6.5.12_preact@10.25.2",
     "npm:preact@*": "10.25.2"
   },
@@ -130,6 +132,15 @@
       "dependencies": [
         "undici-types"
       ]
+    },
+    "@types/nodemailer@6.4.17": {
+      "integrity": "sha512-I9CCaIp6DTldEg7vyUTZi8+9Vo0hi1/T8gv3C89yk1rSAAzoKQ8H8ki/jBYJSFoH/BisgLP8tkZMlQ91CIquww==",
+      "dependencies": [
+        "@types/node"
+      ]
+    },
+    "nodemailer@6.9.16": {
+      "integrity": "sha512-psAuZdTIRN08HKVd/E8ObdV6NO7NTBY3KsC30F7M4H1OnmLCUNaS56FpYxyb26zWLSyYF9Ozch9KYHhHegsiOQ=="
     },
     "preact-render-to-string@6.5.12_preact@10.25.2": {
       "integrity": "sha512-FpU7/cRipZo4diSWQq7gZWVp+Px76CtVduJZNvQwVzynDsAIxKteMrjCCGPbM2oEasReoDffaeMCMlaur9ohIg==",

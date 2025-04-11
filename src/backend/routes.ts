@@ -3,15 +3,16 @@ import { AuthDBControllers } from "./dbControllers.ts";
 import { app, MiddleWares } from "./serverControllers.ts";
 import { render } from "npm:preact-render-to-string";
 import { HomePage } from "../jsx/index.tsx";
+import { ServerURLManager } from "../utils/ServerUtils.ts";
 
 export class Routes {
   static initAuthRoutes() {
-    app.get("/oauth/github/signin", async (req) => {
+    app.get(ServerURLManager.AuthRoutes.githubSignIn, async (req) => {
       return await githubAuth.signIn(req);
     });
 
     app.getWithLocalMiddleware(
-      "/oauth/github/signout",
+      ServerURLManager.AuthRoutes.githubSignOut,
       [MiddleWares.userAuthLocalMiddleware],
       async (req) => {
         const { sessionId } = app.getRequestPayload(req);
@@ -32,12 +33,12 @@ export class Routes {
       return response;
     });
 
-    app.get("/oauth/google/signin", async (req) => {
+    app.get(ServerURLManager.AuthRoutes.googleSignIn, async (req) => {
       return await googleAuth.signIn(req);
     });
 
     app.getWithLocalMiddleware(
-      "/oauth/google/signout",
+      ServerURLManager.AuthRoutes.googleSignOut,
       [MiddleWares.userAuthLocalMiddleware],
       async (req) => {
         const { sessionId } = app.getRequestPayload(req);
@@ -57,6 +58,29 @@ export class Routes {
       );
       return response;
     });
+
+    app.getWithLocalMiddleware(
+      "/logout",
+      [MiddleWares.userAuthLocalMiddleware],
+      (req) => {
+        const { currentUser } = app.getRequestPayload(req);
+        if (!currentUser) {
+          return app.json(
+            {
+              message: "No user logged in",
+            },
+            401
+          );
+        }
+        if (currentUser.type === "github") {
+          return app.redirect(ServerURLManager.AuthRoutes.githubSignOut);
+        } else if (currentUser.type === "google") {
+          return app.redirect(ServerURLManager.AuthRoutes.googleSignOut);
+        } else {
+          return app.redirect(ServerURLManager.AuthRoutes.googleSignOut);
+        }
+      }
+    );
   }
 
   static initUnprotectedRoutes() {
