@@ -1,5 +1,7 @@
 import { route, type Route, Handler } from "@std/http/unstable-route";
 import { serveDir, serveFile } from "@std/http/file-server";
+import type { AnyRouter } from "npm:@trpc/server/unstable-core-do-not-import";
+import { createHTTPServer } from "npm:@trpc/server/adapters/standalone";
 
 type Middleware<T> = (
   state: T,
@@ -193,8 +195,16 @@ export class DenoRouter<
     this.addRoute("GET", path, (req) => serveFile(req, filepath));
   }
 
+  createTRPCServer(router: AnyRouter, context: any, port = 3000) {
+    const server = createHTTPServer({
+      router,
+      createContext: () => context,
+    });
+    server.listen(port);
+  }
+
   private addRoute(
-    method: string,
+    method: "GET" | "POST" | "PUT" | "DELETE" | "ALL",
     path: string,
     handler: Handler,
     middlewares:
@@ -203,9 +213,13 @@ export class DenoRouter<
     middlewareType: "global" | "local" = "global"
   ) {
     const pattern = new URLPattern({ pathname: path });
+    let newMethod = [method];
+    if (method === "ALL") {
+      newMethod = ["GET", "POST", "PUT", "DELETE"];
+    }
     this.routes.push({
       pattern,
-      method,
+      method: newMethod,
       handler: async (req, info, params) => {
         try {
           // 1. run global middleware

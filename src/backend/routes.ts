@@ -7,14 +7,14 @@ import { ServerURLManager } from "../utils/ServerUtils.ts";
 
 export class Routes {
   static initAuthRoutes() {
-    app.get(ServerURLManager.AuthRoutes.githubSignIn, async (req) => {
+    app.get(ServerURLManager.AuthRoutes.githubSignIn, async (req: Request) => {
       return await githubAuth.signIn(req);
     });
 
     app.getWithLocalMiddleware(
       ServerURLManager.AuthRoutes.githubSignOut,
       [MiddleWares.userAuthLocalMiddleware],
-      async (req) => {
+      async (req: Request) => {
         const { sessionId } = app.getRequestPayload(req);
         if (sessionId) {
           await AuthDBControllers.removeSession(sessionId);
@@ -33,14 +33,14 @@ export class Routes {
       return response;
     });
 
-    app.get(ServerURLManager.AuthRoutes.googleSignIn, async (req) => {
+    app.get(ServerURLManager.AuthRoutes.googleSignIn, async (req: Request) => {
       return await googleAuth.signIn(req);
     });
 
     app.getWithLocalMiddleware(
       ServerURLManager.AuthRoutes.googleSignOut,
       [MiddleWares.userAuthLocalMiddleware],
-      async (req) => {
+      async (req: Request) => {
         const { sessionId } = app.getRequestPayload(req);
         if (sessionId) {
           await AuthDBControllers.removeSession(sessionId);
@@ -62,7 +62,7 @@ export class Routes {
     app.getWithLocalMiddleware(
       "/logout",
       [MiddleWares.userAuthLocalMiddleware],
-      (req) => {
+      (req: Request) => {
         const { currentUser } = app.getRequestPayload(req);
         if (!currentUser) {
           return app.json(

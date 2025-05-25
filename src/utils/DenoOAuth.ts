@@ -164,6 +164,16 @@ export class GoogleOAuth {
   }
 }
 
+/**
+ * For development, if env variables are not set, use these defaults:
+ * REDIRECT_URI_GITHUB = "http://localhost:8000/oauth/callback/github"
+ * REDIRECT_URI_GOOGLE = "http://localhost:8000/oauth/callback/google"
+ * GITHUB_CLIENT_ID = "dummy_github_client_id"
+ * GITHUB_CLIENT_SECRET = "dummy_github_client_secret"
+ * GOOGLE_CLIENT_ID = "dummy_google_client_id"
+ * GOOGLE_CLIENT_SECRET = "dummy_google_client_secret"
+ */
+
 export const githubAuth = new GitHubOAuth(Deno.env.get("REDIRECT_URI_GITHUB")!);
 export const googleAuth = new GoogleOAuth(Deno.env.get("REDIRECT_URI_GOOGLE")!);
 

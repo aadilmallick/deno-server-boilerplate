@@ -1,5 +1,5 @@
 {
-  "version": "4",
+  "version": "5",
   "specifiers": {
     "jsr:@deno/kv-oauth@*": "0.11.0",
     "jsr:@std/assert@0.221": "0.221.0",
@@ -22,6 +22,7 @@
     "jsr:@std/path@^1.0.8": "1.0.8",
     "jsr:@std/streams@0.221": "0.221.0",
     "jsr:@std/streams@^1.0.8": "1.0.8",
+    "npm:@trpc/server@*": "11.1.2_typescript@5.8.3",
     "npm:@types/node@*": "22.9.0",
     "npm:@types/nodemailer@*": "6.4.17",
     "npm:nodemailer@*": "6.9.16",
@@ -127,6 +128,12 @@
     }
   },
   "npm": {
+    "@trpc/server@11.1.2_typescript@5.8.3": {
+      "integrity": "sha512-Oi9zWHG0ZDkbDo4sYkduoV7q4sIe6UwjrRLC91vNMYQK+PVgpbTCmK1laRwewAGu0zaayqcGDosANjceOIC3GA==",
+      "dependencies": [
+        "typescript"
+      ]
+    },
     "@types/node@22.9.0": {
       "integrity": "sha512-vuyHg81vvWA1Z1ELfvLko2c8f34gyA0zaic0+Rllc5lbCnbSyuvb2Oxpm6TAUAC/2xZN3QGqxBNggD1nNR2AfQ==",
       "dependencies": [
@@ -150,6 +157,10 @@
     },
     "preact@10.25.2": {
       "integrity": "sha512-GEts1EH3oMnqdOIeXhlbBSddZ9nrINd070WBOiPO2ous1orrKGUM4SMDbwyjSWD1iMS2dBvaDjAa5qUhz3TXqw=="
+    },
+    "typescript@5.8.3": {
+      "integrity": "sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==",
+      "bin": true
     },
     "undici-types@6.19.8": {
       "integrity": "sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw=="
