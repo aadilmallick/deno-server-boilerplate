@@ -1,5 +1,5 @@
-import { route, type Route, Handler } from "@std/http/unstable-route";
-import { serveDir, serveFile } from "@std/http/file-server";
+import { route, type Route, Handler } from "jsr:@std/http/unstable-route";
+import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import type { AnyRouter } from "npm:@trpc/server/unstable-core-do-not-import";
 import { createHTTPServer } from "npm:@trpc/server/adapters/standalone";
 
@@ -183,12 +183,30 @@ export class DenoRouter<
     });
   }
 
-  serveStatic(path: string) {
-    let newPath = path;
-    if (!path.endsWith("/*")) {
-      newPath = path.endsWith("/") ? `${path}*` : `${path}/*`;
+  serveStaticDir(route: string, dirPath: string) {
+    let newPath = route;
+    if (!route.endsWith("/*")) {
+      newPath = route.endsWith("/") ? `${route}*` : `${route}/*`;
     }
-    this.addRoute("GET", newPath, (req) => serveDir(req));
+    this.addRoute("GET", newPath, (req) =>
+      serveDir(req, {
+        fsRoot: dirPath,
+        urlRoot: route,
+      })
+    );
+
+    return {
+      handleStaticAssets: (fallbackHandler: Handler) => {
+        this.get("*", async (req) => {
+          const assetExtensions = [".js", ".css", ".ico"];
+          if (assetExtensions.some((ext) => req.url.endsWith(ext))) {
+            const pathname = new URL(req.url).pathname;
+            return serveFile(req, dirPath + pathname);
+          }
+          return await fallbackHandler(req);
+        });
+      },
+    };
   }
 
   serveFile(path: string, filepath: string) {
