@@ -3,6 +3,33 @@ import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import type { AnyRouter } from "npm:@trpc/server/unstable-core-do-not-import";
 import { createHTTPServer } from "npm:@trpc/server/adapters/standalone";
 
+export function getCORSHeaders({
+  origins,
+  methods,
+  headers,
+  numDays = 1,
+}: {
+  origins: string[] | "*";
+  methods: ("GET" | "POST" | "PUT" | "DELETE" | "OPTIONS")[] | "*";
+  headers: string[] | "*";
+  numDays: number;
+}) {
+  const allowedOrigin = origins === "*" ? "*" : origins.join(", ");
+  const allowedMethods =
+    methods === "*"
+      ? ["GET", "POST", "PUT", "DELETE", "OPTIONS"].join(", ")
+      : methods.join(", ");
+  const allowedHeaders = headers === "*" ? "*" : headers.join(", ");
+
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Methods": allowedMethods,
+    "Access-Control-Allow-Headers": allowedHeaders,
+    "Access-Control-Allow-Credentials": "false",
+    "Access-Control-Max-Age": `${numDays * 24 * 60 * 60}`,
+  };
+}
+
 type Middleware<T> = (
   state: T,
   req: Request
